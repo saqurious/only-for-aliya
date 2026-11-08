@@ -195,7 +195,7 @@
       try {
         // no-cors + URL-encoded body works with a Google Apps Script web app
         await fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) });
-        show('Sent! Thank you, Ma\'am' 💗');
+        show('Sent! Thank you, Ma\'am 💗');
       } catch (err) {
         show('Oops, that did not go through. Please try once more 🙈');
       }
