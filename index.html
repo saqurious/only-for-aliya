@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hey Aliya 💗</title>
+<title>Aliya's Experience Check-in 💗</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
@@ -120,7 +120,7 @@
 <main>
   <header class="hero">
     <h1>Hey Aliya</h1>
-    <p>This is a feedback form created only for you. Could you please answer the following questions…..
+    <p>This is a feedback form created only for you 🫵. Could you please answer the following questions…..
       <span class="please">Pretty Please 🥺</span>
     </p>
   </header>
@@ -150,7 +150,7 @@
 
     <div class="q">
       <label for="q5">Q5. Most importantly, Is Aliya enjoying the ride till now?</label>
-      <textarea id="q5" name="q5" placeholder="Be gentle with the answer 🎢" rows="3"></textarea>
+      <textarea id="q5" name="q5" placeholder="Be gentle with the answer " rows="3"></textarea>
     </div>
 
     <button type="submit">Send it with love 💌</button>
@@ -161,35 +161,42 @@
 <footer>Created by 🐼 for 🐯</footer>
 
 <script>
-  // Placeholder until we decide how answers get back to you.
-  // Later: paste a form/backend URL here (e.g. Formspree) and answers will be POSTed to it.
+  // Paste your Google Apps Script web app URL between the quotes (it ends in /exec)
   const ENDPOINT = "https://script.google.com/macros/s/AKfycbzEla09BMcUHgSN1iJXRvEOORb-jvNSNS_ZDdel0owdIpV4WYZHTHu_M4z-kresduZ6/exec";
 
   const form = document.getElementById('checkin');
   const thanks = document.getElementById('thanks');
+  const btn = form.querySelector('button');
+
+  function show(msg) {
+    thanks.textContent = msg;
+    thanks.classList.remove('show');
+    void thanks.offsetWidth;
+    thanks.classList.add('show');
+    thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // If anything unexpected breaks, say so on screen instead of failing silently
+  window.addEventListener('error', (ev) => show('Page error: ' + ev.message));
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());
-    thanks.classList.remove('show');
-    if (ENDPOINT) {
+    btn.disabled = true;
+    btn.textContent = 'Sending… 💌';
+    if (!ENDPOINT) {
+      show('Thank you, Aliya 💗 (Sending is not hooked up yet, so nothing has been delivered.)');
+    } else {
       try {
         // no-cors + URL-encoded body works with a Google Apps Script web app
-        await fetch(ENDPOINT, {
-          method: 'POST',
-          mode: 'no-cors',
-          body: new URLSearchParams(data)
-        });
-        thanks.textContent = 'Sent! Thank you, Ma''am 💗';
+        await fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(data) });
+        show('Sent! Thank you, Aliya 💗');
       } catch (err) {
-        thanks.textContent = 'Oops, that did not go through. Please try once more 🙈';
+        show('Oops, that did not go through. Please try once more 🙈');
       }
-    } else {
-      thanks.textContent = 'Thank you, Aliya 💗 (Sending is not hooked up yet, so nothing has been delivered.)';
     }
-    void thanks.offsetWidth;
-    thanks.classList.add('show');
-    thanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    btn.disabled = false;
+    btn.textContent = 'Send it with love 💌';
   });
 </script>
 </body>
